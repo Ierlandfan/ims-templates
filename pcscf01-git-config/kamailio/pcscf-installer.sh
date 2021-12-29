@@ -1,7 +1,7 @@
 #!/bin/bash
 # TISMI 2021
 # Ronald Brakeboer
-# Version 1.2
+# Version 1.4
 # Based on the https://open5gs.org/open5gs/docs/tutorial/02-VoLTE-setup 
 # This script is rebuild to do a full automated pcscf install
 
@@ -59,7 +59,7 @@ EOF
 #for now sudo git clone https://github.com/Ierlandfan/ims-templates
 cd /usr/local/src/
 sudo git clone https://github.com/Ierlandfan/ims-templates
-
+sudo cp /usr/local/src/ims-templates/sources.lst /usr/local/src/kamailio/src/
 cd /usr/local/src/kamailio
 export RADCLI=1
 sudo make Q=0 all | sudo tee make_all.txt
