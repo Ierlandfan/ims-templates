@@ -59,7 +59,7 @@ EOF
 #for now sudo git clone https://github.com/Ierlandfan/ims-templates
 cd /usr/local/src/
 sudo git clone https://github.com/Ierlandfan/ims-templates
-sudo cp /usr/local/src/ims-templates/sources.lst /usr/local/src/kamailio/src/
+sudo cp /usr/local/src/ims-templates/modules.lst /usr/local/src/kamailio/src/
 cd /usr/local/src/kamailio
 export RADCLI=1
 sudo make Q=0 all | sudo tee make_all.txt
