@@ -54,7 +54,7 @@ flush privileges;
 exit;
 EOF
 
-#sudo git clone some-tismi-git-location where the modules.lst is to /usr/local/src/kamailio/src 
+ 
 
 #for now sudo git clone https://github.com/Ierlandfan/ims-templates
 cd /usr/local/src/
@@ -66,11 +66,10 @@ sudo make Q=0 all | sudo tee make_all.txt
 sudo make install | sudo tee make_install.txt
 sudo ldconfig
 
-#sudo cp some-tismi-git-location where the kamailio is kamilio to /etc/init.d/kamailio
+
 sudo cp /usr/local/src/ims-templates/init.d/kamailio /etc/init.d/kamailio
 sudo chmod 755 /etc/init.d/kamailio
 
-#sudo cp some-tismi-git-location where the kamailio is kamailio.default /etc/default/kamailio
 sudo cp /usr/local/src/ims-templates/default/kamailio /etc/default/kamailio
 systemctl daemon-reload
 sudo  mkdir -p /var/run/kamailio
@@ -84,12 +83,12 @@ sudo dpkg -i rtpengine-dfx-repo-keyring_1.0_all.deb
 sudo echo "deb [signed-by=/usr/share/keyrings/dfx.at-rtpengine-archive-keyring.gpg] https://dfx.at/rtpengine/10.2 buster main" | sudo tee /etc/apt/sources.list.d/dfx.at-rtpengine.list
 sudo apt update
 sudo apt install rtpengine 
-#sudo cp some-tismi-git-location where the rtpengine.conf is to /etc/rtpengine/
 sudo cp -r /usr/local/src/ims-templates/rtpengine.conf /etc/rtpengine/
 sudo systemctl restart rtpengine
-#sudo cp some-tismi-git-location where the pcscf-template-config is and template script to /usr/local/etc/kamailio
-sudo cp -r /usr/local/src/ims-templates/pcscf01-git-config/kamailio* /usr/local/etc/kamailio
+
+sudo cp -r /usr/local/src/ims-templates/pcscf01-git-config/kamailio/* /usr/local/etc/kamailio
 cd /usr/local/etc/kamailio
+
 sudo sh configurator-ims.sh
 wait
 #sudo /usr/local/etc/kamailio
