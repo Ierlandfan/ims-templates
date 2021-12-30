@@ -91,19 +91,19 @@ read fqdn_domain_escaped
 fqdn_domain_escaped=${fqdn_domain_escaped:-ims\.mnc009\.mcc234\.3gppnetwork\.org}
 echo $fqdn_domain_escaped
 
-printf "fqdn hostname: (default: pcscf01.ims.mnc009.mcc234.3gppnetwork.org)" fqdn_hostname
+printf "fqdn hostname: (default: icscf01.ims.mnc009.mcc234.3gppnetwork.org)" fqdn_hostname
 read fqdn_hostname
-fqdn_hostname=${fqdn_hostname:-pcscf01.ims.mnc009.mcc234.3gppnetwork.org}
+fqdn_hostname=${fqdn_hostname:-icscf01.ims.mnc009.mcc234.3gppnetwork.org}
 echo $fqdn_hostname
 
-printf "fqdn hostname escaped: (default: pcscf01\.ims\.mnc009\.mcc234\.3gppnetwork\.org)" fqdn_hostname_escaped
+printf "fqdn hostname escaped: (default: icscf01\.ims\.mnc009\.mcc234\.3gppnetwork\.org)" fqdn_hostname_escaped
 read fqdn_hostname_escaped
-fqdn_hostname_escaped=${fqdn_hostname_escaped:-pcscf01\.ims\.mnc009\.mcc234\.3gppnetwork\.org}
+fqdn_hostname_escaped=${fqdn_hostname_escaped:-icscf01\.ims\.mnc009\.mcc234\.3gppnetwork\.org}
 echo $fqdn_hostname_escaped
 
-printf "alias hostname: (default: pcscf01.oam.as62167.net)" alias_hostname
+printf "alias hostname: (default: icscf01.oam.as62167.net)" alias_hostname
 read alias_hostname
-alias_hostname=${alias_hostname:-pcscf01.oam.as62167.net}
+alias_hostname=${alias_hostname:-icscf01.oam.as62167.net}
 echo $alias_hostname
 
 printf "pcrf realm: (default: epc.mnc009.mcc234.3gppnetwork.org)" pcrf_realm
