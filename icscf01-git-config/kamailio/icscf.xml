@@ -14,7 +14,7 @@
 	DefaultAuthSessionTimeout="3600"
 	MaxAuthSessionTimeout="3600"
 >
-
+	<Peer FQDN="$_DRA_FQDN_HOSTNAME_" Realm="$_DOMAIN_" port="3868"/>
 	<Peer FQDN="$_HSS_FQDN_HOSTNAME_" Realm="$_DOMAIN_" port="3868"/>
 
 	<Acceptor port="3869" bind="$_INTERFACE_"/>
