@@ -1,7 +1,7 @@
 #!/bin/bash
 # TISMI 2021
 # Ronald Brakeboer
-# Version 3.0
+# Version 3.1
 # Based on the https://open5gs.org/open5gs/docs/tutorial/02-VoLTE-setup 
 # where the configurator was used to alter (only) the HSS scripts.
 # This script is rebuild to do the same for the Kamaili scripts.
