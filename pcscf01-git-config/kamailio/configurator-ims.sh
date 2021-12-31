@@ -121,6 +121,11 @@ read hss_fqdn_hostname
 hss_fqdn_hostname=${hss_fqdn_hostname:-hss01.ims.mnc009.mcc234.3gppnetwork.org} 
 echo $hss_fqdn_hostname
 
+printf "dra fqdn hostname: (default: dra01.epc.mnc009.mcc234.3gppnetwork.org)" dra_fqdn_hostname
+read dra_fqdn_hostname  
+dra_fqdn_hostname=${dra_fqdn_hostname:-dra01.epc.mnc009.mcc234.3gppnetwork.org} 
+echo $dra_fqdn_hostname
+
 printf "ip of interface: (default 0.0.0.0)" interface
 read interface  
 interface=${interface:-0.0.0.0}
@@ -186,6 +191,7 @@ sed -i -e  "s/\$_ALIAS_HOSTNAME_/$alias_hostname/g" $j
 sed -i -e  "s/\$_PCRF_REALM_/$pcrf_realm/g" $j
 sed -i -e  "s/\$_TRF_HOSTNAME_/$trf_hostname/g" $j
 sed -i -e  "s/\$_HSS_FQDN_HOSTNAME_/$hss_fqdn_hostname/g" $j            
+sed -i -e  "s/\$_DRA_FQDN_HOSTNAME_/$dra_fqdn_hostname/g" $j
 sed -i -e  "s/\$_INTERFACE_/$interface/g" $j            
 sed -i -e  "s/\$_WEBSOCKET_WEBSERVER_/$websocket_webserver/g" $j 
 sed -i -e  "s/\$_UDP_LISTEN_IP_/$udp_listen_ip/g" $j 
@@ -222,7 +228,8 @@ sed -i -e   "s/\$_DOMAIN_/$domain/g" $i
 sed -i -e   "s/\$_ALIAS_HOSTNAME_/$alias_hostname/g" $i
 sed -i -e   "s/\$_PCRF_REALM_/$pcrf_realm/g" $i
 sed -i -e   "s/\$_TRF_HOSTNAME_/$trf_hostname/g" $i
-sed -i -e   "s/\$_HSS_FQDN_HOSTNAME_/$hss_fqdn_hostname/g" $i           
+sed -i -e   "s/\$_HSS_FQDN_HOSTNAME_/$hss_fqdn_hostname/g" $i
+sed -i -e  "s/\$_DRA_FQDN_HOSTNAME_/$dra_fqdn_hostname/g" $i
 sed -i -e   "s/\$_INTERFACE_/$interface/g" $i            
 sed -i -e   "s/\$_WEBSOCKET_WEBSERVER_/$websocket_webserver/g" $i 
 sed -i -e   "s/\$_UDP_LISTEN_IP_/$udp_listen_ip/g" $i
@@ -240,6 +247,7 @@ sed -i -e  "s/\$_RX_AF_SIGNALLING_IP_/$rx_af_listen_ip/g" $i
        then
             printf "changing $filename \n"
 
+
 sed -i -e "s/\$_PUBLIC_IP_/$public_ip/g" $filename 
 sed -i -e "s/\$_NAT_IP_/$nat_ip/g" $filename 
 sed -i -e "s/\$_FQDN_HOSTNAME_/$fqdn_hostname/g" $filename 
@@ -250,6 +258,7 @@ sed -i -e "s/\$_ALIAS_HOSTNAME_/$alias_hostname/g" $filename
 sed -i -e "s/\$_PCRF_REALM_/$pcrf_realm/g" $filename 
 sed -i -e "s/\$_TRF_HOSTNAME_/$trf_hostname/g" $filename 
 sed -i -e "s/\$_HSS_FQDN_HOSTNAME_/$hss_fqdn_hostname/g" $filename             
+sed -i -e  "s/\$_DRA_FQDN_HOSTNAME_/$dra_fqdn_hostname/g" $filename
 sed -i -e "s/\$_INTERFACE_/$interface/g" $filename 
 sed -i -e "s/\$_WEBSOCKET_WEBSERVER_/$websocket_webserver/g" $filename  
 sed -i -e "s/\$_UDP_LISTEN_IP_/$udp_listen_ip/g" $filename
