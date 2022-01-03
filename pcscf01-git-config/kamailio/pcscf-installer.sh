@@ -18,7 +18,7 @@ sudo locale-gen "en_US.UTF-8"
 sudo dpkg-reconfigure locales
 sudo apt install -y tcpdump screen ntp ntpdate git-core dkms gcc flex bison make \
 libssl-dev libcurl4-openssl-dev libxml2-dev libpcre3-dev bash-completion g++ autoconf libmnl-dev libsctp-dev libradcli-dev \
-libradcli4
+libradcli4 wget
 cd /usr/local/src/
 sudo git clone https://github.com/herlesupreeth/kamailio
 #Insert some basic check to see if the git download went fine
