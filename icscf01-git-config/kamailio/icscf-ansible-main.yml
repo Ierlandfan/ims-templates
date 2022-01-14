@@ -143,8 +143,10 @@
 # Bash:
 # apt install mariadb-server mariadb-common libmariadb-dev-compat libmariadb-dev
 #
-#
-# There's a Ansible plugin for this (WIP)
+#Defined in meta/main.yml 
+# ---
+# dependencies:
+#   - { role: database/mariadb }
 
 
 # Bash:
@@ -179,7 +181,7 @@
   when: kamailio_src_directory.stat.exists == True
 
 - name: make cfg with prefix path
-  command: "make PREFIX=/etc/kamailio cfg"
+  command: "make PREFIX='/etc/kamailio' cfg"
   args:
     chdir: "{{kamailio_src_directory}}"
   when: kamailio_src_directory.stat.exists == True
@@ -444,8 +446,7 @@
 # chown kamailio:kamailio /var/run/kamailio	
 # ADDUSER TO BE DONE TO BE DONE TO BE DONE #######
 
-#Install rtpengine
-# There is an existing task for that
+# scscf does not need rtpengine
  
 # Copy the preconfigured Kamailio icscf-configs 
 # Bash 
