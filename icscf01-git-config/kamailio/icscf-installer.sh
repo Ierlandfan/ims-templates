@@ -57,8 +57,10 @@ EOF
 #TODO Make domain a variabe and ask for domain input user
 sudo mysql << EOF
 use icscf;
-INSERT INTO \`nds_trusted_domains\` VALUES (1,\'ims.ims.tismidevelopment.nl\');
-INSERT INTO \`s_cscf\` VALUES (1,\'First S-CSCF\',\'sip:scscf.ims.tismidevelopment.nl:6060\');
+# INSERT INTO \`nds_trusted_domains\` VALUES (1,\'zrh1.as62167.net\'); 
+# INSERT INTO `nds_trusted_domains` VALUES (2,'ims.mnc009.mcc234.3gppnetwork.org');
+# INSERT INTO `nds_trusted_domains` VALUES (3,'epc.mnc009.mcc234.3gppnetwork.org');
+INSERT INTO \`s_cscf\` VALUES (1,\'First S-CSCF\',\'sip:scscf.ims.mnc009.mcc234.3gppnetwork.org':6060\');
 INSERT INTO \`s_cscf_capabilities\` VALUES (1,1,0),(2,1,1);
 exit;
 EOF
