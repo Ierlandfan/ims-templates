@@ -144,7 +144,12 @@
 # apt install mariadb-server mariadb-common libmariadb-dev-compat libmariadb-dev
 #
 #
-# There's a Ansible plugin for this (WIP)
+
+#Defined in meta/main.yml 
+# ---
+# dependencies:
+#   - { role: database/mariadb }
+
 
 
 # Bash:
@@ -440,8 +445,7 @@
 # chown kamailio:kamailio /var/run/kamailio	
 # ADDUSER TO BE DONE TO BE DONE TO BE DONE #######
 
-#Install rtpengine
-# There is an existing task for that
+# scscf does not need rtpengine
  
 # Copy the preconfigured Kamailio scscf-configs 
 # Bash 
