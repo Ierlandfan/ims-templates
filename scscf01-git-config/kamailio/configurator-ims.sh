@@ -14,7 +14,7 @@
 
 # Example 
 #$_PUBLIC_IP_ 		        (0.0.0.0 for all interfaces)
-#$_NAT_IP_ 			(IP To send when UE is behind double NAT)
+#$_NAT_IP_ 			(IP To advertise when UE is behind double NAT)
 #$_IP_			        (Internal or LAN IP) 
 #$_FQDN_HOSTNAME_		(Fully Qualified Domain name e.g pscsf01.ims.mnc009.mcc234.3gppnetwork.org)
 #$_FQDN_HOSTNAME_ESCAPED_	(\Fully\.\Qualified\.\Domain\.\name\ e.g "scscf01\.ims\.mnc009\.mcc234\.3gppnetwork\.org")
