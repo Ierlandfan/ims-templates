@@ -25,7 +25,7 @@ sudo git clone https://github.com/herlesupreeth/kamailio
 [ -d "/usr/local/src/kamailio" ] && echo "Directory /usr/local/src/kamailio exists. All seems fine" || echo "Error: Directory /usr/local/src/kamailio does not exists."
 cd kamailio
 sudo git checkout -b 5.3 origin/5.3
-sudo make cfg
+sudo make PREFIX="/etc/kamailio" cfg
 sudo apt install mariadb-server mariadb-common libmariadb-dev-compat libmariadb-dev
 # Maybe some basic check the download went ok and mariadb is started
 UP=$(/etc/init.d/mysql status | grep running | grep -v not | wc -l);
