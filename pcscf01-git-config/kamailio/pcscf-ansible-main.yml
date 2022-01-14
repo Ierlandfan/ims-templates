@@ -1,0 +1,471 @@
+---
+
+#(WIP, syntax probably not correct)
+
+# ATTENTION!! FIRST!! Define variables for the non-interactive run of configurator-ims.sh in extra-vars.yml
+# Run playbook with  --extra-vars="@extra-vars.yml"
+ 
+# Install required packages
+# Bash equivalent
+# apt install -y tcpdump screen ntp ntpdate git-core dkms gcc flex bison make \
+# libssl-dev libcurl4-openssl-dev libxml2-dev libpcre3-dev bash-completion g++ autoconf libmnl-dev libsctp-dev libradcli-dev \
+# libradcli4
+
+- name: Install tcpdump prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.tcpdump.packages }}"
+
+- name: Install screen prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.screen.packages }}"
+ 
+  - name: Install ntp prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.ntp.packages }}"
+ 
+- name: Install ntpdate prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.ntpdate.packages }}"
+  
+
+- name: Install gitcore prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.git-core.packages }}"
+
+- name: Install dkms prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.dkms.packages }}"
+
+- name: Install gcc prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.gcc.packages }}"
+
+- name: Install flex prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.flex.packages }}"
+
+- name: Install bison prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.bison.packages }}"
+
+- name: Install make prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.make.packages }}"
+  
+- name: Install libssl-dev prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.libssl-dev.packages }}"
+  
+
+- name: Install libcurl4-openssl-dev prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.libcurl4-openssl-dev.packages }}"
+  
+- name: Install libxml2-dev prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.libxml2-dev.packages }}"
+
+- name: Install libpcre3-dev prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.libpcre3-dev.packages }}"
+
+- name: Install bash-completion prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.bash-completion.packages }}"
+
+- name: Install g++-10 prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.g++-10.packages }}"
+
+- name: Install autoconf prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.autoconf.packages }}"
+
+- name: Install libmnl-dev prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.libmnl-dev.packages }}"
+
+- name: Install libsctp-dev prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.libsctp-dev.packages }}"
+
+- name: Install libradcli-dev prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.libradcli-dev.packages }}"
+  
+- name: Install libradcli4 prerequisites
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ dist.libradcli4.packages }}"  
+
+# Install Mariadb
+# Bash:
+# apt install mariadb-server mariadb-common libmariadb-dev-compat libmariadb-dev
+#
+#
+# There's a Ansible plugin for this (WIP)
+
+
+# Bash:
+# cd /usr/local/src/
+# sudo git clone https://github.com/herlesupreeth/kamailio
+# cd kamailio
+# git checkout -b 5.3 origin/5.3
+# make cfg
+
+- name: Git checkout our Kamailio branch
+  ansible.builtin.git:
+    repo: 'https://github.com/herlesupreeth/kamailio'
+    dest: /usr/local/src/
+    version: 5.3
+
+- name: Register Kamailio src directory 
+    stat:
+      path: /usr/local/src/kamailio
+    register: kamailio_src_directory
+  - debug:
+      msg: "Directory /usr/local/src/kamailio exists"
+    when: kamailio_src_directory.stat.exists
+  - debug:
+      msg: "Directory Kamailio not found, something went wrong cloning"
+  - meta: end_play
+    when: kamailio_src_directory.stat.exists == False
+
+- name: Checkout the 5.3 branch
+  command: "git checkout -b 5.3 origin/5.3"
+  args:
+    chdir: "{{kamailio_src_directory}}"
+  when: kamailio_src_directory.stat.exists == True
+
+- name: make cfg with prefix path
+  command: "make PREFIX=/etc/kamailio cfg"
+  args:
+    chdir: "{{kamailio_src_directory}}"
+  when: kamailio_src_directory.stat.exists == True
+
+# Mariadb mysql_secure_installation
+# Bash:
+# mysql_secure_installation
+
+- name: "Set the root password"
+  mysql_user:
+    login_user: root
+    login_password: ''
+    name: root
+    password: "{{ mysql_root_password }}"
+    priv: "*.*:ALL,GRANT"
+    check_implicit_admin: yes
+    host: localhost
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+
+- name: "Remove all anonymous user accounts"
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: "Remove MySQL test database"
+  mysql_db:
+    name: test
+    state: absent
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: "Create default db"
+  mysql_db:
+    name: "{{ db_name }}"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Reload privilege tables
+  command: 'mysql -ne "{{ item }}"'
+  with_items:
+    - FLUSH PRIVILEGES
+  changed_when: False
+
+# Create and import PCSCF specific tables
+# Bash 
+# mysql << EOF
+# CREATE DATABASE  \`pcscf\`;
+# EOF
+# cd /usr/local/src/kamailio/utils/kamctl/mysql
+# mysql -u root -p pcscf < standard-create.sql
+# mysql -u root -p pcscf < presence-create.sql
+# mysql -u root -p pcscf < ims_usrloc_pcscf-create.sql
+# mysql -u root -p pcscf < ims_dialog-create.sql
+
+- name: Create a new database with name 'pcscf'
+  community.mysql.mysql_db:
+    check_implicit_admin: yes
+    login_user: ronaldb
+    login_password: some-very-long-and-not-yet-known-password
+    name: pcscf
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+	
+- name: Import standard-create sql template
+  community.mysql.mysql_db:
+    check_implicit_admin: yes
+    state: import
+    name: pcscf
+    target: /usr/local/src/kamailio/utils/kamctl/mysql/standard-create.sql
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+	
+- name: Import presence-create sql template
+  community.mysql.mysql_db:
+    check_implicit_admin: yes
+    state: import
+    name: pcscf
+    target: /usr/local/src/kamailio/utils/kamctl/mysql/presence-create.sql
+	login_unix_socket: /var/run/mysqld/mysqld.sock
+	
+- name: Import ims_usrloc_pcscf-create sql template
+  community.mysql.mysql_db:
+    check_implicit_admin: yes
+    state: import
+    name: pcscf
+    target: /usr/local/src/kamailio/utils/kamctl/mysql/ims_usrloc_pcscf-create.sql
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+	
+- name: Import ims_dialog-create sql template
+  community.mysql.mysql_db:
+    check_implicit_admin: yes
+    state: import
+    name: pcscf
+    target: /usr/local/src/kamailio/utils/kamctl/mysql/ims_dialog-create.sql
+	login_unix_socket: /var/run/mysqld/mysqld.sock
+	
+- name: Set sql user privileges
+  community.mysql.mysql_user:pcscf
+    password='heslo' 
+    priv='pcscf.*:delete,insert,select,update'
+    state=present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Set sql user privileges
+  community.mysql.mysql_user:pcscf
+    password='heslo'  
+    host:%
+    priv='pcscf.*:ALL'
+    state=present 
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+# Import preconfigured kamailio pcscf templates
+#sudo git clone https://github.com/Ierlandfan/ims-templates
+#cd /usr/local/src/
+#sudo git clone https://github.com/Ierlandfan/ims-templates
+#sudo cp /usr/local/src/ims-templates/modules.lst /usr/local/src/kamailio/src/
+
+- name: Git checkout our Kamailio PCSCF templates
+  ansible.builtin.git:
+    repo: 'git,tismi.com/ims-templates'
+    dest: /usr/local/src/
+
+- name: Register IMS-templates src directory 
+    stat:
+      path: /usr/local/src/ims-templates
+    register: ims-templates_src_directory
+  - debug:
+      msg: "Directory /usr/local/src/ims-templates exists"
+    when: ims-templates_src_directory.stat.exists
+  - debug:
+      msg: "Directory ims-templates not found, something went wrong cloning"
+  - meta: end_play
+    when: ims-templates_src_directory.stat.exists == False
+	
+
+# We use our own preconfigured modules.lst, saves editing  
+# When we clone our own branch this will be obsolete
+# Bash equivalent
+# cp /usr/local/src/ims-templates/modules.lst /usr/local/src/kamailio/src/
+
+- name: Copy startup script kamailio
+  copy:
+    src: "/usr/local/src/ims-templates/kamailio-scripts/modules.lst"
+    dest: "{{kamailio_src_directory}}/src/"
+    mode: "755"
+  when: kamailio_src_directory is changed
+
+# Compile Kamailio
+# cd /usr/local/src/kamailio
+# export RADCLI=1
+# sudo make Q=0 all | sudo tee make_all.txt
+# sudo make install | sudo tee make_install.txt
+# sudo ldconfig
+
+- name: export RADCLI
+  command: "export RADCLI=1"
+  args:
+    chdir: "{{kamailio_src_directory}}"
+  when: kamailio_src_directory is changed
+
+- name: Run make all
+  command: "make Q=0 all | tee make_all.txt"
+  args:
+    chdir: "{{kamailio_src_directory}}"
+  when: kamailio_src_directory is changed
+  
+- name: Run make install
+  command: "make install | tee make_install.txt"
+  args:
+    chdir: "{{kamailio_src_directory}}"
+  when: kamailio_src_directory is changed
+
+- name: Run ldconfig
+  command: "ldconfig"
+  args:
+    chdir: "{{kamailio_src_directory}}"
+  when: kamailio_src_directory is changed
+
+# Check if everything went fine
+# Left out the bash equivalent on purpose
+
+- name: Register Kamailio config directory 
+    stat:
+      path: /etc/kamailio/
+    register: kamailio_config_directory
+  - debug:
+      msg: "Directory /etc/kamailio/ exists. All went fine"
+    when: kamailio_config_directory.stat.exists
+  - debug:
+      msg: "Directory /etc/kamailio/ not found, something went wrong building...exiting"
+  - meta: end_play
+    when: kamailio_config_directory.stat.exists == False
+
+  
+# Copy preconfigured startup scripts:
+# When we clone our own branch this will be obsolete since we can preconfigure the files in our own branch
+# Bash
+# cp /usr/local/src/ims-templates/init.d/kamailio /etc/init.d/kamailio
+# chmod 755 /etc/init.d/kamailio
+# cp /usr/local/src/ims-templates/default/kamailio /etc/default/kamailio
+# systemctl daemon-reload
+  
+- name: Copy startup script kamailio
+  copy:
+    src: "{{ims-templates_src_directory}}/kamailio-scripts/init.d/kamailio"
+    dest: "/etc/init.d/"
+    mode: "755"
+  when: kamailio_src_directory is changed
+
+- name: Copy another startup script for starting kamailio
+  copy:
+    src: "{{ims-templates_src_directory}}/kamailio-scripts/default/kamailio"
+    dest: "/etc/default/"
+  when: kamailio_src_directory is changed  
+  
+- name: daemon-reload
+  command: "systemctl daemon-reload"
+  args:
+    chdir: "{{kamailio_config_directory}}"
+    when: kamailio_src_directory is changed
+  
+- name: make dir /var/run/kamailio
+  command: "mkdir -p /var/run/kamailio"
+  args:
+    chdir: "    chdir: "{{kamailio_config_directory}}""
+    when: kamailio_src_directory is changed  
+	
+#Add user
+#
+# Bash:
+#
+# adduser --quiet --system --group --disabled-password \
+#        --shell /bin/false --gecos "Kamailio" \
+#        --home /var/run/kamailio kamailio	
+# chown kamailio:kamailio /var/run/kamailio	
+# ADDUSER TO BE DONE TO BE DONE TO BE DONE #######
+
+#Install rtpengine
+# There is an existing task for that
+ 
+# Copy the preconfigured Kamailio pcscf-configs 
+# Bash 
+# cp -r /usr/local/src/ims-templates/pcscf01-git-config/kamailio/* /etc/kamailio/
+# (This includes the configurator-ims.sh scipt as well)
+
+- name: Copy preconfigured Kamailio pcscf-configs 
+  copy:
+    src: "{{ims-templates_src_directory}}/pcscf01-git-config/kamailio/*"
+    dest: "{{kamailio_config_directory}}"
+  when: kamailio_src_directory is changed 
+  
+#cd to /etc/kamailio and execute configurator-ims.sh
+# Bash:
+# cd /etc/kamailio/ 
+# sh configurator-ims.sh
+
+# Variables for the non-interactive run of configurator-ims.sh should be defined !!!
+
+- name: Run configurator.sh with /bin/bash
+  ansible.builtin.script: {{kamailio_config_directory}}/configurator-ims.sh
+  args:
+    chdir: {{kamailio_config_directory}} 
+    executable: /bin/bash
+
+# Create initial kamailio database
+# Bash:
+# kamdbctl create
+
+- name: kamdbctl create
+  command: "kamdbctl create"
+  args:
+    chdir: {{kamailio_config_directory}}
+    when: kamailio_src_directory is changed  
+
+# Start kamailio
+
+- name: Start/Enable Kamailio
+  systemd:
+    name: "kamailio.service"
+    daemon_reload: true
+    enabled: true
+    masked: false
+    state: "started"
+ 
