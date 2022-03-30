@@ -18,13 +18,12 @@ sudo locale-gen "en_US.UTF-8"
 sudo dpkg-reconfigure locales
 sudo apt install -y tcpdump screen ntp ntpdate git-core dkms gcc flex bison make \
 libssl-dev libcurl4-openssl-dev libxml2-dev libpcre3-dev bash-completion g++ autoconf libmnl-dev libsctp-dev libradcli-dev \
-libradcli4
+libradcli4 libwebsockets-dev
 cd /usr/local/src/
-sudo git clone https://github.com/herlesupreeth/kamailio
+sudo git clone --depth 1 --no-single-branch https://github.com/kamailio/kamailio kamailio
 #Insert some basic check to see if the git download went fine
 [ -d "/usr/local/src/kamailio" ] && echo "Directory /usr/local/src/kamailio exists. All seems fine" || echo "Error: Directory /usr/local/src/kamailio does not exists."
 cd kamailio
-sudo git checkout -b 5.3 origin/5.3
 sudo make PREFIX="/etc/kamailio" cfg
 sudo apt install mariadb-server mariadb-common libmariadb-dev-compat libmariadb-dev
 # Maybe some basic check the download went ok and mariadb is started
@@ -71,6 +70,7 @@ sudo git clone https://github.com/Ierlandfan/ims-templates
 [ -d "/usr/local/src/ims-templates" ] && echo "Directory /usr/local/src/ims-templates exists. All seems fine" || echo "Error: Directory /usr/local/src/ims-templates does not exists." && exit 
 
 sudo cp /usr/local/src/ims-templates/modules.lst /usr/local/src/kamailio/src/
+sudo cp /usr/local/src/ims-templates/kamailio/routing.c /usr/local/src/kamailio/src/modules/cdp
 cd /usr/local/src/kamailio
 export RADCLI=1
 sudo make Q=0 all | sudo tee make_all.txt
