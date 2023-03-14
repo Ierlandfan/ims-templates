@@ -62,7 +62,7 @@ flush privileges;
 exit;
 EOF
 
- 
+  
 
 #for now sudo git clone https://github.com/Ierlandfan/ims-templates
 cd /usr/local/src/
