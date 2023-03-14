@@ -24,7 +24,7 @@ sudo git clone --depth 1 --no-single-branch https://github.com/kamailio/kamailio
 #Insert some basic check to see if the git download went fine
 [ -d "/usr/local/src/kamailio" ] && echo "Directory /usr/local/src/kamailio exists. All seems fine" || echo "Error: Directory /usr/local/src/kamailio does not exists."
 cd kamailio
-sudo make PREFIX="/usrl/local/src/kamailio/pcscf" cfg
+sudo make PREFIX="/usrl/local/src/kamailio/icscf" cfg
 sudo apt install mariadb-server mariadb-common libmariadb-dev-compat libmariadb-dev
 # Maybe some basic check the download went ok and mariadb is started
 UP=$(/etc/init.d/mysql status | grep running | grep -v not | wc -l);
