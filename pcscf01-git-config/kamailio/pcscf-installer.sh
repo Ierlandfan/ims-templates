@@ -50,7 +50,7 @@ sudo mysql_secure_installation
 sudo mysql << EOF
 CREATE DATABASE  \`pcscf\`;
 EOF
-cd /usr/local/src/kamailio/kamailio/utils/kamctl/mysql
+cd /usr/local/src/kamailio/utils/kamctl/mysql
 sudo mysql -u root -p pcscf < standard-create.sql
 sudo mysql -u root -p pcscf < presence-create.sql
 sudo mysql -u root -p pcscf < ims_usrloc_pcscf-create.sql
