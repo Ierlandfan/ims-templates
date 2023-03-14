@@ -24,7 +24,7 @@ sudo git clone --depth 1 --no-single-branch https://github.com/kamailio/kamailio
 #Insert some basic check to see if the git download went fine
 [ -d "/usr/local/src/kamailio" ] && echo "Directory /usr/local/src/kamailio exists. All seems fine" || echo "Error: Directory /usr/local/src/kamailio does not exists."
 cd kamailio
-sudo make PREFIX="/etc/kamailio" cfg
+sudo make PREFIX="/usrl/local/src/kamailio/pcscf" cfg
 sudo apt install mariadb-server mariadb-common libmariadb-dev-compat libmariadb-dev
 # Maybe some basic check the download went ok and mariadb is started
 UP=$(/etc/init.d/mysql status | grep running | grep -v not | wc -l);
@@ -90,7 +90,7 @@ sudo adduser --quiet --system --group --disabled-password \
 sudo chown kamailio:kamailio /var/run/kamailio
 cd /usr/local/src/ 
 
-sudo cp -r /usr/local/src/ims-templates/icscf01-git-config/kamailio/* /usr/local/etc/kamailio
+sudo cp -r /usr/local/src/ims-templates/icscf01-git-config/kamailio/* /usr/local/etc/kamailio/icscf
 cd /usr/local/etc/kamailio
 
 sudo sh configurator-ims.sh
