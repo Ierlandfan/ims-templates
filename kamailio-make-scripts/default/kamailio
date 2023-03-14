@@ -17,7 +17,7 @@ SHM_MEMORY=64
 PKG_MEMORY=8
 
 # Config file
-CFGFILE=/usr/local/etc/kamailio/kamailio.cfg
+CFGFILE=/usr/local/etc/kamailio/pcscf/kamailio.cfg
 
 # Enable the server to leave a core file when it crashes.
 # Set this to 'yes' to enable Kamailio to leave a core file when it crashes
